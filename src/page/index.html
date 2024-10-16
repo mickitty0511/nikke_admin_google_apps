@@ -9,9 +9,11 @@
       body {
         font-family: 'Roboto', Arial, sans-serif;
         background-color: #f5f5f5;
-        margin: 0;
-        padding: 20px;
+        margin: 0; /* マージンを0に設定 */
+        padding: 0; /* パディングを0に設定 */
         color: #333;
+        height: 100vh; /* ビューポートの高さいっぱいに設定 */
+        overflow: hidden; /* オーバーフローを隠す */
       }
       .container {
         max-width: 600px;
@@ -136,49 +138,86 @@
         font-size: 1.2em;
         font-weight: bold;
         color: #2c3e50;
-        font-style: italic;
+      }
+      
+      /* ローディングスピナーのスタイルを追加 */
+      .loading-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%; /* 100vhから100%に変更 */
+        width: 100%; /* 幅を100%に設定 */
+        position: fixed; /* 固定位置に設定 */
+        top: 0;
+        left: 0;
+        background-color: #f5f5f5; /* 背景色を設定 */
+      }
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      .loading-text {
+        margin-top: 20px;
+        font-size: 1.2em;
+        color: #333;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <div class="quote-container">
-        <img id="character-image" class="character-image" src="" alt="Character">
-        <div id="character-quote" class="character-quote"></div>
+    <div id="loading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">設定を読み込んでいます...</div>
+    </div>
+    
+    <div id="content" style="display: none;">
+      <div class="container">
+        <div class="quote-container">
+          <img id="character-image" class="character-image" src="" alt="Character">
+          <div id="character-quote" class="character-quote"></div>
+        </div>
+        <div id="settings"></div>
       </div>
-      <div id="settings"></div>
     </div>
     
     <script>
       const characterQuotes = {
         anderson: {
           quotes: [
-            {text: "君の指揮に期待している", image: "https://gameo.jp/nikke/wp-content/uploads/sites/50/2022/11/c31f1249259c73cc9e4ca0017e23a961.jpg"},
-            {text: "結果を楽しみにしている", image: "https://gameo.jp/nikke/wp-content/uploads/sites/50/2022/11/c31f1249259c73cc9e4ca0017e23a961.jpg"}
+            {text: "君の指揮に期待している", image: "https://github.com/mickitty0511/nikke_admin_google_apps/blob/main/src/imgs/characters/anderson/anderson_1.jpg?raw=true"},
+            {text: "結果を楽しみにしている", image: "https://github.com/mickitty0511/nikke_admin_google_apps/blob/main/src/imgs/characters/anderson/anderson_1.jpg?raw=true"}
           ]
         },
         mustang: {
           quotes: [
-            {text: "Youの実力、見せてくださいYO！", image: "https://gameo.jp/img/nikke/icon/%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B0.png"},
-            {text: "エンタァァーーーテインメントォーーー！", image: "https://gameo.jp/img/nikke/icon/%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B0.png"}
+            {text: "Youの実力、見せてくださいYO！", image: "https://github.com/mickitty0511/nikke_admin_google_apps/blob/main/src/imgs/characters/mustang/mustang_1.png?raw=true"},
+            {text: "エンタァァーーーテインメントォーーー！", image: "https://github.com/mickitty0511/nikke_admin_google_apps/blob/main/src/imgs/characters/mustang/mustang_2.png?raw=true"}
           ]
         },
         shuen: {
           quotes: [
-            {text: "鉄くずどもの実力、みせてもらおうかしら", image: "https://gun.net-inov.com/wp-content/uploads/2023/04/83d61f935ca58f7a39ebe2bc76daa96b-e1686115442298.jpg"},
-            {text: "ミシリスのCEOである私が！わざわざ足を運んであげたのよ？", image: "https://gameo.jp/nikke/wp-content/uploads/sites/50/2023/09/31d6ff3d32302525cda8bcd82428ae32-728x409.jpg"}
+            {text: "鉄くずどもの実力、みせてもらおうかしら", image: "https://github.com/mickitty0511/nikke_admin_google_apps/blob/main/src/imgs/characters/shuen/shuen_1.jpg?raw=true"},
+            {text: "ミシリスのCEOである私が！わざわざ足を運んであげたのよ？", image: "https://github.com/mickitty0511/nikke_admin_google_apps/blob/main/src/imgs/characters/shuen/shuen_2.jpg?raw=true"}
           ]
         },
         ingrid: {
           quotes: [
-            {text: "タクティカルな指揮に期待している", image: "https://nekolog.jp/games/wp-content/uploads/2022/11/%E5%90%8D%E7%A7%B0%E6%9C%AA%E8%A8%AD%E5%AE%9A%E3%81%AE%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E3%81%AE%E3%82%B3%E3%83%94%E3%83%BC-62.png"},
-            {text: "タク...ブリーフィングだぞ！静粛に！💢", image: "https://cdn-ak.f.st-hatena.com/images/fotolife/V/Vento/20230401/20230401153025.jpg"}
+            {text: "タクティカルな指揮に期待している", image: "https://github.com/mickitty0511/nikke_admin_google_apps/blob/main/src/imgs/characters/ingrid/ingrid_1.png?raw=true"},
+            {text: "ブリーフィングだぞ！静粛に！💢", image: "https://github.com/mickitty0511/nikke_admin_google_apps/blob/main/src/imgs/characters/ingrid/ingrid_2.jpg?raw=true"}
           ]
         },
         shifty: {
           quotes: [
-            {text: "指揮官？？...指揮かーん！...指揮官？", image: "https://img.game8.jp/7877751/7a9aa93ac38481b9d1c4727ee1956774.png/show"},
-            {text: "こんにちは、指揮官", image: "https://img.game8.jp/7877751/7a9aa93ac38481b9d1c4727ee1956774.png/show"},
+            {text: "指揮官？？...指揮かーん！...指揮官？", image: "https://github.com/mickitty0511/nikke_admin_google_apps/blob/main/src/imgs/characters/shifty/shifty_1.png?raw=true"},
+            {text: "こんにちは、指揮官！", image: "https://github.com/mickitty0511/nikke_admin_google_apps/blob/main/src/imgs/characters/shifty/shifty_1.png?raw=true"},
           ]
         }
       };
@@ -191,25 +230,38 @@
         return character.quotes[randomQuoteIndex];
       }
 
-      function displayRandomQuoteAndImage() {
+      // displayRandomQuoteAndImage 関数を修正
+      async function displayRandomQuoteAndImage() {
         const { text, image } = getRandomQuoteAndImage();
         const quoteElement = document.getElementById('character-quote');
         const imageElement = document.getElementById('character-image');
         quoteElement.textContent = text;
-        imageElement.src = image;
         imageElement.style.display = 'none'; // 画像を一旦非表示に
-        imageElement.onload = function() {
-          this.style.display = 'block'; // 画像の読み込みが完了したら表示
-        };
-        imageElement.onerror = function() {
-          this.style.display = 'none'; // エラー時は非表示のまま
-        };
+
+        // 画像の読み込みを待つ
+        await new Promise((resolve, reject) => {
+          imageElement.onload = resolve;
+          imageElement.onerror = reject;
+          imageElement.src = image;
+        }).catch(() => {
+          console.error('画像の読み込みに失敗しました:', image);
+        });
+
+        imageElement.style.display = 'block'; // 画像を表示
       }
 
       // 設定を取得して表示する関数
-      function loadSettings() {
-        google.script.run.withSuccessHandler(displaySettings).getSettings();
-        displayRandomQuoteAndImage();
+      async function loadSettings() {
+        await waitForPageLoad();
+        const settings = await new Promise((resolve) => {
+          google.script.run.withSuccessHandler(resolve).getSettings();
+        });
+        displaySettings(settings);
+        await displayRandomQuoteAndImage();
+        
+        // ローディング画面を非表示にし、コンテンツを表示する
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
       }
       
       // 設定を表示する関数
@@ -293,8 +345,21 @@
           .updateSetting(section, key, checkbox.checked);
       }
       
+      // 新しい関数を追加
+      function waitForPageLoad() {
+        return new Promise((resolve) => {
+          if (document.readyState === 'complete') {
+            resolve();
+          } else {
+            window.addEventListener('load', resolve);
+          }
+        });
+      }
+
       // 初期表示
-      google.script.run.withSuccessHandler(loadSettings).initializeSettings();
+      google.script.run.withSuccessHandler(async (result) => {
+        await loadSettings();
+      }).initializeSettings();
     </script>
   </body>
 </html>
