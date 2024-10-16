@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>設定</title>
+    <style>
+      body {
+        font-family: 'Roboto', Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 20px;
+      }
+      h2 {
+        color: #2c3e50;
+        margin-top: 0;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .section {
+        margin-bottom: 20px;
+      }
+      .section-title {
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #34495e;
+      }
+      .setting {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border-radius: 4px;
+      }
+      .setting-label {
+        font-weight: bold;
+      }
+      .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+      }
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 34px;
+      }
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+      }
+      input:checked + .slider {
+        background-color: #2196F3;
+      }
+      input:checked + .slider:before {
+        transform: translateX(26px);
+      }
+      .toggle-switch.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+      .toggle-switch.loading {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+      .loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 34px;
+      }
+      .loading-spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #3498db;
+        border-top: 2px solid transparent;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .quote-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+      .character-image {
+        width: 100px;
+        height: 100px;
+        margin-right: 15px;
+        border-radius: 50%;
+        object-fit: cover;
+        display: none; /* 初期状態で非表示 */
+      }
+      .character-quote {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #2c3e50;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="quote-container">
+        <img id="character-image" class="character-image" src="" alt="Character">
+        <div id="character-quote" class="character-quote"></div>
+      </div>
+      <div id="settings"></div>
+    </div>
+    
+    <script>
+      const characterQuotes = {
+        anderson: {
+          quotes: [
+            {text: "君の指揮に期待している", image: "https://gameo.jp/nikke/wp-content/uploads/sites/50/2022/11/c31f1249259c73cc9e4ca0017e23a961.jpg"},
+            {text: "結果を楽しみにしている", image: "https://gameo.jp/nikke/wp-content/uploads/sites/50/2022/11/c31f1249259c73cc9e4ca0017e23a961.jpg"}
+          ]
+        },
+        mustang: {
+          quotes: [
+            {text: "Youの実力、見せてくださいYO！", image: "https://gameo.jp/img/nikke/icon/%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B0.png"},
+            {text: "エンタァァーーーテインメントォーーー！", image: "https://gameo.jp/img/nikke/icon/%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B0.png"}
+          ]
+        },
+        shuen: {
+          quotes: [
+            {text: "鉄くずどもの実力、みせてもらおうかしら", image: "https://gun.net-inov.com/wp-content/uploads/2023/04/83d61f935ca58f7a39ebe2bc76daa96b-e1686115442298.jpg"},
+            {text: "ミシリスのCEOである私が！わざわざ足を運んであげたのよ？", image: "https://gameo.jp/nikke/wp-content/uploads/sites/50/2023/09/31d6ff3d32302525cda8bcd82428ae32-728x409.jpg"}
+          ]
+        },
+        ingrid: {
+          quotes: [
+            {text: "タクティカルな指揮に期待している", image: "https://nekolog.jp/games/wp-content/uploads/2022/11/%E5%90%8D%E7%A7%B0%E6%9C%AA%E8%A8%AD%E5%AE%9A%E3%81%AE%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E3%81%AE%E3%82%B3%E3%83%94%E3%83%BC-62.png"},
+            {text: "タク...ブリーフィングだぞ！静粛に！💢", image: "https://cdn-ak.f.st-hatena.com/images/fotolife/V/Vento/20230401/20230401153025.jpg"}
+          ]
+        },
+        shifty: {
+          quotes: [
+            {text: "指揮官？？...指揮かーん！...指揮官？", image: "https://img.game8.jp/7877751/7a9aa93ac38481b9d1c4727ee1956774.png/show"},
+            {text: "こんにちは、指揮官", image: "https://img.game8.jp/7877751/7a9aa93ac38481b9d1c4727ee1956774.png/show"},
+          ]
+        }
+      };
+
+      function getRandomQuoteAndImage() {
+        const characters = Object.keys(characterQuotes);
+        const randomCharacter = characters[Math.floor(Math.random() * characters.length)];
+        const character = characterQuotes[randomCharacter];
+        const randomQuoteIndex = Math.floor(Math.random() * character.quotes.length);
+        return character.quotes[randomQuoteIndex];
+      }
+
+      function displayRandomQuoteAndImage() {
+        const { text, image } = getRandomQuoteAndImage();
+        const quoteElement = document.getElementById('character-quote');
+        const imageElement = document.getElementById('character-image');
+        quoteElement.textContent = text;
+        imageElement.src = image;
+        imageElement.style.display = 'none'; // 画像を一旦非表示に
+        imageElement.onload = function() {
+          this.style.display = 'block'; // 画像の読み込みが完了したら表示
+        };
+        imageElement.onerror = function() {
+          this.style.display = 'none'; // エラー時は非表示のまま
+        };
+      }
+
+      // 設定を取得して表示する関数
+      function loadSettings() {
+        google.script.run.withSuccessHandler(displaySettings).getSettings();
+        displayRandomQuoteAndImage();
+      }
+      
+      // 設定を表示する関数
+      function displaySettings(settings) {
+        const settingsDiv = document.getElementById('settings');
+        settingsDiv.innerHTML = '';
+        
+        for (const [sectionName, sectionSettings] of Object.entries(settings)) {
+          const sectionDiv = document.createElement('div');
+          sectionDiv.className = 'section';
+          
+          const sectionTitle = document.createElement('div');
+          sectionTitle.className = 'section-title';
+          sectionTitle.textContent = sectionName;
+          sectionDiv.appendChild(sectionTitle);
+          
+          for (const [key, value] of Object.entries(sectionSettings)) {
+            const settingDiv = document.createElement('div');
+            settingDiv.className = 'setting';
+            
+            const label = document.createElement('span');
+            label.className = 'setting-label';
+            label.textContent = key;
+            settingDiv.appendChild(label);
+            
+            const toggleSwitch = document.createElement('label');
+            toggleSwitch.className = 'toggle-switch';
+            
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = value;
+            checkbox.onchange = (e) => updateSetting(sectionName, key, e.target);
+            
+            const slider = document.createElement('span');
+            slider.className = 'slider';
+            
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.className = 'loading-overlay';
+            loadingOverlay.style.display = 'none';
+            
+            const loadingSpinner = document.createElement('div');
+            loadingSpinner.className = 'loading-spinner';
+            
+            loadingOverlay.appendChild(loadingSpinner);
+            
+            toggleSwitch.appendChild(checkbox);
+            toggleSwitch.appendChild(slider);
+            toggleSwitch.appendChild(loadingOverlay);
+            settingDiv.appendChild(toggleSwitch);
+            
+            sectionDiv.appendChild(settingDiv);
+          }
+          
+          settingsDiv.appendChild(sectionDiv);
+        }
+      }
+      
+      // 設定を更新する関数
+      function updateSetting(section, key, checkbox) {
+        const toggleSwitch = checkbox.closest('.toggle-switch');
+        const loadingOverlay = toggleSwitch.querySelector('.loading-overlay');
+        
+        // トグルスイッチを無効化し、ローディングオーバーレイを表示
+        toggleSwitch.classList.add('loading');
+        loadingOverlay.style.display = 'flex';
+        
+        google.script.run
+          .withSuccessHandler((result) => {
+            displaySettings(result);
+            // トグルスイッチを有効化し、ローディングオーバーレイを非表示
+            toggleSwitch.classList.remove('loading');
+            loadingOverlay.style.display = 'none';
+          })
+          .withFailureHandler((error) => {
+            console.error('Error updating setting:', error);
+            // エラー時は元の状態に戻す
+            checkbox.checked = !checkbox.checked;
+            toggleSwitch.classList.remove('loading');
+            loadingOverlay.style.display = 'none';
+          })
+          .updateSetting(section, key, checkbox.checked);
+      }
+      
+      // 初期表示
+      google.script.run.withSuccessHandler(loadSettings).initializeSettings();
+    </script>
+  </body>
+</html>
