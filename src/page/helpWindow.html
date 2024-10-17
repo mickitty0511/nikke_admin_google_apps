@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIKKE育成状況管理 操作説明</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Roboto', sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+      h1 {
+        color: #1976D2;
+        font-weight: 500;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      h2 {
+        color: #0D47A1;
+        font-weight: 400;
+        border-bottom: 2px solid #1976D2;
+        padding-bottom: 10px;
+        margin-top: 30px;
+      }
+      .tabs {
+        display: flex;
+        justify-content: space-around;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+      }
+      .tab {
+        padding: 15px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .tab:hover {
+        background-color: #E3F2FD;
+      }
+      .tab.active {
+        background-color: #1976D2;
+        color: #fff;
+      }
+      .tab-content {
+        display: none;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .tab-content.active {
+        display: block;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e0e0e0;
+      }
+      th {
+        background-color: #E3F2FD;
+        color: #0D47A1;
+        font-weight: 500;
+      }
+      ul {
+        padding-left: 20px;
+      }
+      li {
+        margin-bottom: 10px;
+      }
+      .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #1976D2;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+      }
+      .button:hover {
+        background-color: #1565C0;
+      }
+      .button-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .button {
+        padding: 12px 24px;
+        background-color: #1976D2;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+      }
+      .button:hover {
+        background-color: #1565C0;
+      }
+      .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+      .navigation-buttons .button {
+        flex: 1;
+        margin: 0 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>NIKKE管理設定 操作説明</h1>
+    
+    <div class="tabs">
+      <div class="tab active" onclick="openTab(event, 'basic')">基本設定</div>
+      <div class="tab" onclick="openTab(event, 'nikke_info')">基本情報シート</div>
+      <div class="tab" onclick="openTab(event, 'option')">オプションシート</div>
+      <div class="tab" onclick="openTab(event, 'collection')">コレクションシート</div>
+      <div class="tab" onclick="openTab(event, 'skill')">スキルシート</div>
+      <div class="tab" onclick="openTab(event, 'treasure')">宝ものシート</div>
+    </div>
+
+    <div id="basic" class="tab-content active">
+      <h2>実行可能な操作</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>操作</th>
+            <th>説明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>設定を開く</strong></td>
+            <td>各種設定の有効化/無効化を行うウィンドウを開きます。</td>
+          </tr>
+          <tr>
+            <td><strong>オプション一括更新</strong></td>
+            <td>オプションシートのプルダウンを一括で更新します。</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <h2>設定の有効化/無効化</h2>
+      <p>「設定を開く」から以下の設定を変更できます：</p>
+      <table>
+        <thead>
+          <tr>
+            <th>設定項目</th>
+            <th>説明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>オプション一括更新</strong></td>
+            <td>オプションシートのプルダウン一括更新機能の有効/無効を切り替えます。</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <h2>注意事項</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th>説明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>設定変更後の操作</strong></td>
+            <td>設定を変更した後は、必ずスプレッドシートを再読み込みしてください。</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <h2>各シートの説明ページへ移動</h2>
+      <p>以下のボタンをクリックすると、各シートの説明に移動できます：</p>
+      <div class="button-container">
+        <button class="button" onclick="openTab(event, 'nikke_info')">基本情報シート</button>
+        <button class="button" onclick="openTab(event, 'option')">オプションシート</button>
+        <button class="button" onclick="openTab(event, 'collection')">コレクションシート</button>
+        <button class="button" onclick="openTab(event, 'skill')">スキルシート</button>
+        <button class="button" onclick="openTab(event, 'treasure')">宝ものシート</button>
+      </div>
+      <div class="navigation-buttons">
+        <button class="button prev-button" onclick="goToPreviousTab('basic')"></button>
+        <button class="button next-button" onclick="goToNextTab('basic')"></button>
+      </div>
+    </div>
+
+    <div id="nikke_info" class="tab-content">
+      <h2>基本情報シート</h2>
+      <p>このシートでは、各NIKKEのステータスや育成状況を管理します。</p>
+      <ul>
+        <li>NIKKEの基本情報（名前、属性など）を入力します。</li>
+        <li>各NIKKEの所持状況や育成優先度を記載できます。</li>
+      </ul>
+      <div class="navigation-buttons">
+        <button class="button prev-button" onclick="goToPreviousTab('nikke_info')"></button>
+        <button class="button next-button" onclick="goToNextTab('nikke_info')"></button>
+      </div>
+    </div>
+
+    <div id="skill" class="tab-content">
+      <h2>スキルシート</h2>
+      <p>このシートでは、NIKKEのスキル情報を管理します。</p>
+      <ul>
+        <li>各NIKKEのスキルに対するスキルレベルを記録します。</li>
+        <li>スキルの優先度を立て管理することができます。</li>
+        <li>スキルレベルはプルダウンで選択できます。</li>
+      </ul>
+      <div class="navigation-buttons">
+        <button class="button prev-button" onclick="goToPreviousTab('skill')"></button>
+        <button class="button next-button" onclick="goToNextTab('skill')"></button>
+      </div>
+    </div>
+
+    <div id="option" class="tab-content">
+      <h2>オプションシート</h2>
+      <p>このシートでは、NIKKEに装備するオプション（装備）の管理を行います。</p>
+      <ul>
+        <li>オプションの種類、数値を記録します。</li>
+        <li>オプション数値の目標と優先度を設定できます。</li>
+        <li>オプションとその数値はプルダウンで選択できます。</li>
+      </ul>
+      <div class="navigation-buttons">
+        <button class="button prev-button" onclick="goToPreviousTab('option')"></button>
+        <button class="button next-button" onclick="goToNextTab('option')"></button>
+      </div>
+    </div>
+
+    <div id="collection" class="tab-content">
+      <h2>コレクションシート</h2>
+      <p>このシートでは、ゲーム内のコレクション要素を管理します。</p>
+      <ul>
+        <li>各種コレクションの進捗状況を記録します。</li>
+        <li>未達成のコレクションや優先度の高いものを把握できます。</li>
+        <li>コレクションの段階とレアリティはプルダウンで選択できます。</li>
+      </ul>
+      <div class="navigation-buttons">
+        <button class="button prev-button" onclick="goToPreviousTab('collection')"></button>
+        <button class="button next-button" onclick="goToNextTab('collection')"></button>
+      </div>
+    </div>
+
+    <div id="treasure" class="tab-content">
+      <h2>宝ものシート</h2>
+      <p>このシートでは、ゲーム内の宝もの（特殊アイテムや報酬）を管理します。</p>
+      <ul>
+        <li>各宝ものの育成状況を記録します。</li>
+        <li>宝ものの優先度や使用計画を立てることができます。</li>
+      </ul>
+      <div class="navigation-buttons">
+        <button class="button prev-button" onclick="goToPreviousTab('treasure')"></button>
+        <button class="button next-button" onclick="goToNextTab('treasure')"></button>
+      </div>
+    </div>
+
+    <!-- 「以降は非表示にする」トグルボタンを追加 -->
+    <div style="text-align: center; margin-top: 20px;">
+      <label>
+        <input type="checkbox" id="hideHelpToggle">
+        以降は非表示にする
+      </label>
+    </div>
+
+    <script>
+      // タブの順序を定義
+      const tabOrder = ['basic', 'nikke_info', 'option', 'collection', 'skill', 'treasure'];
+
+      /**
+       * タブのIDからタブのタイトルを取得する関数
+       * @param {string} tabId - タブのID
+       * @returns {string} タブの表示名
+       */
+      function getTabTitle(tabId) {
+        const tabTitles = {
+          basic: '基本設定',
+          nikke_info: '基本情報シート',
+          option: 'オプションシート',
+          collection: 'コレクションシート',
+          skill: 'スキルシート',
+          treasure: '宝ものシート'
+        };
+        return tabTitles[tabId] || '';
+      }
+
+      /**
+       * 前のタブに移動する関数
+       * @param {string} currentTab - 現在のタブのID
+       */
+      function goToPreviousTab(currentTab) {
+        const index = tabOrder.indexOf(currentTab);
+        if (index > 0) {
+          const prevTab = tabOrder[index - 1];
+          openTab(null, prevTab);
+        }
+      }
+
+      /**
+       * 次のタブに移動する関数
+       * @param {string} currentTab - 現在のタブのID
+       */
+      function goToNextTab(currentTab) {
+        const index = tabOrder.indexOf(currentTab);
+        if (index < tabOrder.length - 1) {
+          const nextTab = tabOrder[index + 1];
+          openTab(null, nextTab);
+        }
+      }
+
+      /**
+       * タブを開く関数
+       * @param {Event} evt - イベントオブジェクト
+       * @param {string} tabName - 開くタブのID
+       */
+      function openTab(evt, tabName) {
+        var i, tabContent, tabLinks;
+        tabContent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabContent.length; i++) {
+          tabContent[i].style.display = "none";
+          tabContent[i].classList.remove("active");
+        }
+        tabLinks = document.getElementsByClassName("tab");
+        for (i = 0; i < tabLinks.length; i++) {
+          tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+          if (tabLinks[i].getAttribute('onclick').includes(`'${tabName}'`)) {
+            tabLinks[i].className += " active";
+          }
+        }
+        const activeTab = document.getElementById(tabName);
+        activeTab.style.display = "block";
+        activeTab.classList.add("active");
+
+        // ページ上部にスクロール
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // ナビゲーションボタンのラベルを更新
+        updateNavigationButtons(tabName);
+      }
+
+      /**
+       * ナビゲーションボタンのラベルを更新する関数
+       * @param {string} currentTab - 現在のタブのID
+       */
+      function updateNavigationButtons(currentTab) {
+        const index = tabOrder.indexOf(currentTab);
+        const prevTab = tabOrder[index - 1];
+        const nextTab = tabOrder[index + 1];
+
+        const navigation = document.getElementById(currentTab).querySelector('.navigation-buttons');
+        const prevButton = navigation.querySelector('.prev-button');
+        const nextButton = navigation.querySelector('.next-button');
+
+        if (prevTab) {
+          prevButton.textContent = `${getTabTitle(prevTab)}に移動`;
+          prevButton.style.display = 'inline-block';
+        } else {
+          prevButton.style.display = 'none'; // 最初のタブなら前へボタンを非表示
+        }
+
+        if (nextTab) {
+          nextButton.textContent = `${getTabTitle(nextTab)}に移動`;
+          nextButton.style.display = 'inline-block';
+        } else {
+          nextButton.style.display = 'none'; // 最後のタブなら次へボタンを非表示
+        }
+      }
+
+      // 初期表示時にナビゲーションボタンを更新
+      document.addEventListener('DOMContentLoaded', () => {
+        updateNavigationButtons('basic');
+      });
+
+      // トグルボタンの状態を初期化
+      document.addEventListener('DOMContentLoaded', () => {
+        google.script.run.withSuccessHandler((hide) => {
+          document.getElementById('hideHelpToggle').checked = hide === 'true';
+        }).getHideHelpWindow();
+      });
+
+      // トグルボタンの状態が変更されたときに設定を保存
+      document.getElementById('hideHelpToggle').addEventListener('change', function() {
+        var hide = this.checked;
+        google.script.run.setHideHelpWindow(hide);
+      });
+    </script>
+  </body>
+</html>

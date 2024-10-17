@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+      .container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+      }
+      h2 {
+        color: #333;
+        margin-top: 0;
+      }
+      #progressContainer {
+        margin-top: 20px;
+      }
+      .progress-bar {
+        width: 100%;
+        background-color: #e0e0e0;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .progress-bar-fill {
+        display: block;
+        height: 10px;
+        background-color: #4CAF50;
+        transition: width 0.5s ease-in-out;
+      }
+      #progressText {
+        margin-top: 10px;
+        text-align: center;
+        font-size: 14px;
+        color: #666;
+      }
+      .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .icon {
+        font-size: 24px;
+        text-align: center;
+        margin: 20px 0;
+      }
+      .checkmark {
+        color: #4CAF50;
+        font-size: 48px;
+        text-align: center;
+        margin: 20px 0;
+      }
+      /* クラッカーのスタイル */
+      .confetti {
+        width: 15px;
+        height: 15px;
+        background-color: #f2d74e;
+        position: absolute;
+        left: 50%;
+        animation: confetti 5s ease-in-out -2s infinite;
+        transform-origin: left top;
+      }
+      .confetti:nth-child(2n) {
+        background-color: #95c3de;
+      }
+      .confetti:nth-child(3n) {
+        background-color: #ff9a91;
+      }
+      .confetti:nth-child(4n) {
+        background-color: #f2d74e;
+      }
+      .confetti:nth-child(5n) {
+        background-color: #ff9a91;
+      }
+
+      @keyframes confetti {
+        0% { transform: rotate(15deg) rotateY(0deg) translate(0,0); }
+        25% { transform: rotate(5deg) rotateY(360deg) translate(-5vw,20vh); }
+        50% { transform: rotate(15deg) rotateY(720deg) translate(5vw,60vh); }
+        75% { transform: rotate(5deg) rotateY(1080deg) translate(-10vw,80vh); }
+        100% { transform: rotate(15deg) rotateY(1440deg) translate(10vw,110vh); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2 id="statusText">一括更新準備中</h2>
+      <div id="preparingIcon" class="icon">⚙️</div>
+      <div id="loadingSpinner" class="spinner" style="display: none;"></div>
+      <div id="progressContainer" style="display: none;">
+        <div class="progress-bar">
+          <span class="progress-bar-fill" style="width:0%;"></span>
+        </div>
+        <div id="progressText">0%</div>
+      </div>
+      <div id="completionCheckmark" class="checkmark" style="display: none;">✔</div>
+      <div id="confettiContainer" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;"></div>
+    </div>
+
+    <script>
+      let intervalId;
+
+      // ページ読み込み時に自動で処理を開始
+      window.onload = function() {
+        startBatchProcess();
+      };
+
+      function startBatchProcess() {
+        document.getElementById('preparingIcon').style.display = 'none';
+        document.getElementById('loadingSpinner').style.display = 'block';
+        document.getElementById('statusText').textContent = 'ただいま更新中...';
+        google.script.run
+          .withSuccessHandler(handleBatchStart)
+          .withFailureHandler(onBatchError)
+          .startBatchApplyDropdown();
+      }
+
+      function handleBatchStart(result) {
+        document.getElementById('loadingSpinner').style.display = 'none';
+        document.getElementById('progressContainer').style.display = 'block';
+        updateProgress(result);
+        // 定期的に進捗を確認
+        intervalId = setInterval(checkProgress, 15000);
+      }
+
+      function checkProgress() {
+        google.script.run
+          .withSuccessHandler(handleProgressUpdate)
+          .withFailureHandler(onBatchError)
+          .getBatchProgress();
+      }
+
+      function handleProgressUpdate(result) {
+        updateProgress(result);
+        if (!result.isProcessing || result.completed >= result.total) {
+          clearInterval(intervalId);
+          onBatchComplete(result.total);
+        }
+        // デバッグ用のログ
+        console.log('Progress update:', result);
+      }
+
+      function updateProgress(result) {
+        var percentage = Math.round((result.completed / result.total) * 100);
+        var progressBar = document.querySelector('.progress-bar-fill');
+        var progressText = document.getElementById('progressText');
+        
+        progressBar.style.width = percentage + '%';
+        progressText.textContent = percentage + '% 完了';
+      }
+
+      function onBatchComplete(total) {
+        var progressBar = document.querySelector('.progress-bar-fill');
+        var progressText = document.getElementById('progressText');
+        var statusText = document.getElementById('statusText');
+        var completionCheckmark = document.getElementById('completionCheckmark');
+        var confettiContainer = document.getElementById('confettiContainer');
+        
+        progressBar.style.width = '100%';
+        progressText.textContent = ''; // テキストを空にする
+        statusText.textContent = '一括更新完了';
+        completionCheckmark.style.display = 'block';
+        
+        // クラッカーアニメーションの開始
+        confettiContainer.style.display = 'block';
+        createConfetti();
+      }
+
+      function createConfetti() {
+        const confettiCount = 50;
+        const container = document.getElementById('confettiContainer');
+        
+        for (let i = 0; i < confettiCount; i++) {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = Math.random() * 100 + '%';
+          confetti.style.animationDelay = Math.random() * 5 + 's';
+          container.appendChild(confetti);
+        }
+
+        // 5秒後にクラッカーを消す
+        setTimeout(() => {
+          container.style.display = 'none';
+          container.innerHTML = '';
+        }, 5000);
+      }
+
+      function onBatchError(error) {
+        clearInterval(intervalId);
+        document.getElementById('loadingSpinner').style.display = 'none';
+        document.getElementById('statusText').textContent = 'エラーが発生しました';
+        document.getElementById('progressText').textContent = 'エラー: ' + error.message;
+      }
+    </script>
+  </body>
+</html>
