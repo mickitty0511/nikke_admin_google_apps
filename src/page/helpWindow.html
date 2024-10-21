@@ -31,20 +31,23 @@
       }
       .tabs {
         display: flex;
-        justify-content: space-around;
+        flex-wrap: wrap;
+        justify-content: center;
         background-color: #fff;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         margin-bottom: 30px;
+        padding: 5px;
       }
       .tab {
-        padding: 15px 20px;
+        padding: 10px 15px;
         cursor: pointer;
         transition: background-color 0.3s;
         text-align: center;
+        font-size: 13px;
+        margin: 2px;
+        border-radius: 4px;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
       .tab:hover {
         background-color: #E3F2FD;
@@ -190,6 +193,63 @@
       .navigation-button:hover {
         background-color: #007B9E;
       }
+      
+      /* モダンなトグルスイッチのスタイル */
+      .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+      }
+
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 34px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: #2196F3;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(26px);
+      }
+
+      .toggle-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      .toggle-label {
+        margin-left: 10px;
+      }
     </style>
   </head>
   <body>
@@ -199,7 +259,7 @@
     <div class="tabs">
       <? for (var tab of tabs) { ?>
         <div class="tab <? if (tab.id === 'basic') { ?>active<? } ?>" onclick="openTab(event, '<?!= tab.id ?>')">
-          <?!= tab.label ?>
+          <?!= tab.shortLabel ?>
         </div>
       <? } ?>
     </div>
@@ -352,13 +412,16 @@
       </div>
     </div>
 
-    <!-- 「以降は非表示にする」トグルボタンを追加 -->
-    <div style="text-align: center; margin-top: 20px;">
-      <label>
-        <input type="checkbox" id="hideHelpToggle">
-        以降は非表示にする
-      </label>
-    </div>
+    <!-- 「以降は非表示にする」トグルスイッチを条件付きで追加 -->
+    <? if (showToggle) { ?>
+      <div class="toggle-container">
+        <label class="toggle-switch">
+          <input type="checkbox" id="hideHelpToggle">
+          <span class="slider"></span>
+        </label>
+        <span class="toggle-label">以降は操作説明を非表示にする</span>
+      </div>
+    <? } ?>
 
     <script>
       // タブの順序を定義
@@ -394,7 +457,7 @@
       }
 
       /**
-       * 次のタブに移動する関数
+       * 次タブに移動する関数
        * @param {string} currentTab - 現在のタブのID
        */
       function goToNextTab(currentTab) {
@@ -468,19 +531,20 @@
         updateNavigationButtons('basic');
       });
 
-      // トグルボタンの状態を初期化
-      document.addEventListener('DOMContentLoaded', () => {
-        google.script.run.withSuccessHandler((hide) => {
-          document.getElementById('hideHelpToggle').checked = hide === 'true';
-        }).getHideHelpWindow();
-      });
+      // トグルスイッチの状態を初期化
+      <? if (showToggle) { ?>
+        document.addEventListener('DOMContentLoaded', () => {
+          google.script.run.withSuccessHandler((hide) => {
+            document.getElementById('hideHelpToggle').checked = hide === 'true';
+          }).getHideHelpWindow();
+        });
 
-      // トグルボタンの状態が変更されたときに設定を保存
-      document.getElementById('hideHelpToggle').addEventListener('change', function() {
-        var hide = this.checked;
-        google.script.run.setHideHelpWindow(hide);
-      });
-      
+        // トグルスイッチの状態が変更されたときに設定を保存
+        document.getElementById('hideHelpToggle').addEventListener('change', function() {
+          var hide = this.checked;
+          google.script.run.setHideHelpWindow(hide);
+        });
+      <? } ?>
     </script>
   </body>
 </html>

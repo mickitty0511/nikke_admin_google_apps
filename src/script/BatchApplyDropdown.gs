@@ -3,26 +3,22 @@ function checkAndStartBatchApplyDropdown() {
   const batchUpdateEnabled = userProperties.getProperty('batch_update_option_dropdowns') === 'true';
 
   if (!batchUpdateEnabled) {
-    // 許諾ダイアログを表示
-    const ui = SpreadsheetApp.getUi();
-    const response = ui.alert(
-      'オプション一括更新の有効化',
-      'オプション一括更新機能が無効になっています。有効化しますか？',
-      ui.ButtonSet.YES_NO
-    );
-
-    if (response == ui.Button.YES) {
-      // ユーザーが許可した場合、設定を有効化
-      userProperties.setProperty('batch_update_option_dropdowns', 'true');
-      showBatchUpdateSidebar();
-    } else {
-      // ユーザーが拒否した場合、メッセージを表示
-      Browser.msgBox('オプションシートの一括更新は実行されませんでした。設定から有効化してください。');
-    }
+    // 許諾ダイアログを表示（HTML版）
+    const html = HtmlService.createHtmlOutputFromFile('checkandStartBatchApplyDropdown')
+    .setWidth(600)
+    .setHeight(400);
+    
+    SpreadsheetApp.getUi().showModalDialog(html, 'オプション一括更新の有効化');
   } else {
     // すでに有効化されている場合は直接サイドバーを表示
     showBatchUpdateSidebar();
   }
+}
+
+function enableBatchUpdate() {
+  const userProperties = PropertiesService.getUserProperties();
+  userProperties.setProperty('batch_update_option_dropdowns', 'true');
+  showBatchUpdateSidebar();
 }
 
 function showBatchUpdateSidebar() {

@@ -7,12 +7,12 @@ function showHelpWindow(includeToggle = true) {
   
   // タブのデータをテンプレートに渡す
   template.tabs = [
-    {id: 'basic', label: '基本設定'},
-    {id: 'nikke_info', label: '基本情報シート'},
-    {id: 'option', label: 'オプションシート'},
-    {id: 'collection', label: 'コレクションシート'},
-    {id: 'skill', label: 'スキルシート'},
-    {id: 'treasure', label: '宝ものシート'}
+    {id: 'basic', label: '基本設定', shortLabel: '基本'},
+    {id: 'nikke_info', label: '基本情報シート', shortLabel: '基本情報'},
+    {id: 'option', label: 'オプションシート', shortLabel: 'オプション'},
+    {id: 'collection', label: 'コレクションシート', shortLabel: 'コレクション'},
+    {id: 'skill', label: 'スキルシート', shortLabel: 'スキル'},
+    {id: 'treasure', label: '宝ものシート', shortLabel: '宝もの'}
   ];
   
   // トグルボタンの表示有無をテンプレートに渡す
