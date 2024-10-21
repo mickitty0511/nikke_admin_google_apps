@@ -337,6 +337,10 @@
         box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
         overflow: hidden;
         position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
       }
 
       .zapping-line {
@@ -355,6 +359,11 @@
         text-align: center;
         text-shadow: 0 0 10px #0ff;
         animation: flicker 0.5s infinite alternate;
+        position: absolute;
+        top: 40%; /* 中央より少し上に配置 */
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
       }
 
       @keyframes zapping-line {
