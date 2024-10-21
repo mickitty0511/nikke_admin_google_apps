@@ -4,7 +4,7 @@
     <base target="_top">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NIKKE育成状況管理 操作説明</title>
+    <title>ようこそ、指揮官！</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
       body {
@@ -125,18 +125,83 @@
         flex: 1;
         margin: 0 5px;
       }
+      
+      /* シート名ボタンのコンテナスタイル */
+      .sheet-button-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px; /* ここを10pxから15pxに増やしました */
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+      
+      /* シート名ボタンのスタイル */
+      .sheet-button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s, transform 0.1s;
+        text-align: left;
+        width: 90%;
+        display: flex;
+        align-items: center;
+        padding: 12px; /* ここを8pxから12pxに増やしました */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      }
+      
+      .sheet-button img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-right: 16px; /* ここを12pxから16pxに増やしました */
+      }
+      
+      .sheet-button span {
+        flex: 1;
+      }
+      
+      .sheet-button:hover {
+        background-color: #45a049;
+        transform: translateY(-2px);
+      }
+      
+      .sheet-button:active {
+        transform: translateY(1px);
+      }
+      
+      /* 移動ボタンのスタイル */
+      .navigation-button {
+        background-color: #008CBA; /* 青色 */
+        color: white;
+        padding: 12px 24px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+        transition: background-color 0.3s;
+      }
+      
+      .navigation-button:hover {
+        background-color: #007B9E;
+      }
     </style>
   </head>
   <body>
-    <h1>NIKKE管理設定 操作説明</h1>
+    <h1>ようこそ、指揮官！</h1>
     
+    <!-- タブヘッダーを動的に生成 -->
     <div class="tabs">
-      <div class="tab active" onclick="openTab(event, 'basic')">基本設定</div>
-      <div class="tab" onclick="openTab(event, 'nikke_info')">基本情報シート</div>
-      <div class="tab" onclick="openTab(event, 'option')">オプションシート</div>
-      <div class="tab" onclick="openTab(event, 'collection')">コレクションシート</div>
-      <div class="tab" onclick="openTab(event, 'skill')">スキルシート</div>
-      <div class="tab" onclick="openTab(event, 'treasure')">宝ものシート</div>
+      <? for (var tab of tabs) { ?>
+        <div class="tab <? if (tab.id === 'basic') { ?>active<? } ?>" onclick="openTab(event, '<?!= tab.id ?>')">
+          <?!= tab.label ?>
+        </div>
+      <? } ?>
     </div>
 
     <div id="basic" class="tab-content active">
@@ -195,16 +260,27 @@
       
       <h2>各シートの説明ページへ移動</h2>
       <p>以下のボタンをクリックすると、各シートの説明に移動できます：</p>
-      <div class="button-container">
-        <button class="button" onclick="openTab(event, 'nikke_info')">基本情報シート</button>
-        <button class="button" onclick="openTab(event, 'option')">オプションシート</button>
-        <button class="button" onclick="openTab(event, 'collection')">コレクションシート</button>
-        <button class="button" onclick="openTab(event, 'skill')">スキルシート</button>
-        <button class="button" onclick="openTab(event, 'treasure')">宝ものシート</button>
-      </div>
-      <div class="navigation-buttons">
-        <button class="button prev-button" onclick="goToPreviousTab('basic')"></button>
-        <button class="button next-button" onclick="goToNextTab('basic')"></button>
+      <div class="sheet-button-container">
+        <div class="sheet-button" onclick="openTab(event, 'nikke_info')">
+          <img src="https://github.com/mickitty0511/nikke_admin_google_apps/blob/main/src/imgs/characters/rapi/rapi_1.png?raw=true" alt="基本情報アイコン">
+          <span>基本情報シート</span>
+        </div>
+        <div class="sheet-button" onclick="openTab(event, 'option')">
+          <img src="https://github.com/mickitty0511/nikke_admin_google_apps/blob/main/src/imgs/characters/anis/anis_1.jpg?raw=true" alt="オプションアイコン">
+          <span>オプションシート</span>
+        </div>
+        <div class="sheet-button" onclick="openTab(event, 'collection')">
+          <img src="https://github.com/mickitty0511/nikke_admin_google_apps/blob/main/src/imgs/characters/helm/helm_1.jpg?raw=true" alt="コレクションアイコン">
+          <span>コレクションシート</span>
+        </div>
+        <div class="sheet-button" onclick="openTab(event, 'skill')">
+          <img src="https://github.com/mickitty0511/nikke_admin_google_apps/blob/main/src/imgs/characters/epinel/epinel_1.png?raw=true" alt="スキルアイコン">
+          <span>スキルシート</span>
+        </div>
+        <div class="sheet-button" onclick="openTab(event, 'treasure')">
+          <img src="https://github.com/mickitty0511/nikke_admin_google_apps/blob/main/src/imgs/characters/guillotine/guillotine_1.jpg?raw=true" alt="宝ものアイコン">
+          <span>宝ものシート</span>
+        </div>
       </div>
     </div>
 
@@ -404,6 +480,7 @@
         var hide = this.checked;
         google.script.run.setHideHelpWindow(hide);
       });
+      
     </script>
   </body>
 </html>

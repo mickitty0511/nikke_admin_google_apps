@@ -5,7 +5,7 @@ function onOpen() {
   spreadsheet.addMenu("★NIKKE管理設定", [
     {
       name: "★【操作説明】はじめに",
-      functionName: "showHelpWindow"
+      functionName: "showHelpWindowFromMenu"
     },
     {
       name: "設定を開く",
