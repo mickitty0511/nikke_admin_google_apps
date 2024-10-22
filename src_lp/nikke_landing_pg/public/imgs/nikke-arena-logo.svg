@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120">
+  <!-- 背景の六角形 -->
+  <path d="M20 10 L380 10 L390 60 L380 110 L20 110 L10 60 Z" fill="#1a1a2e" />
+  
+  <!-- 装飾的な線 -->
+  <path d="M30 20 L370 20" stroke="#00f7ff" stroke-width="2" fill="none" />
+  <path d="M30 100 L370 100" stroke="#00f7ff" stroke-width="2" fill="none" />
+  
+  <!-- システムを表す円形要素 -->
+  <circle cx="50" cy="60" r="15" fill="none" stroke="#00f7ff" stroke-width="2" />
+  <circle cx="350" cy="60" r="15" fill="none" stroke="#00f7ff" stroke-width="2" />
+  
+  <!-- メインテキスト -->
+  <text x="200" y="55" font-family="Arial" font-size="28" fill="#ffffff" text-anchor="middle" font-weight="bold">NIKKE ARENA</text>
+  <text x="200" y="80" font-family="Arial" font-size="20" fill="#00f7ff" text-anchor="middle">Management System</text>
+  
+  <!-- 装飾的な要素 -->
+  <path d="M85 60 L115 60" stroke="#00f7ff" stroke-width="2" />
+  <path d="M285 60 L315 60" stroke="#00f7ff" stroke-width="2" />
+</svg>
