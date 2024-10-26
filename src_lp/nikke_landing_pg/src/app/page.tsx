@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import Image from 'next/image'
 import { useInView } from 'react-intersection-observer'
 import { AlertTriangle, CheckCircle, ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 
 const images = [
      "/imgs/command_center.jpg",
@@ -234,9 +235,11 @@ export default function Component() {
         
         <div className="mt-8 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-600 blur"></div>
-          <Button className="relative w-full bg-green-600 hover:bg-green-800 text-white text-xl py-6 shadow-lg transform hover:scale-105 transition-all duration-300">
-            今すぐ無料で始める！
-          </Button>
+          <Link href="https://docs.google.com/spreadsheets/d/1sErZbnZb5C6m0Obb5wE-sC-kN_SrXhy5Ci0H4wxClPw/edit?usp=sharing" passHref>
+            <Button className="relative w-full bg-green-600 hover:bg-green-800 text-white text-xl py-6 shadow-lg transform hover:scale-105 transition-all duration-300">
+              今すぐ無料で始める！
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
