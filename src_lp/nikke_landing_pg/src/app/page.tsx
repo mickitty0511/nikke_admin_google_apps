@@ -72,7 +72,7 @@ export default function Component() {
 
   const challengeItems = [
     { challenge: "多様な育成状況の把握", solution: "WEB/スマホで育成状況を可視化" },
-    { challenge: "育成リソースの効率的な配分", solution: "リソース配分の最適化をユーザに合わせて提案" },
+    { challenge: "育成リソースの効率的配分", solution: "最適なリソース配分を提案" },
   ]
 
   return (
@@ -217,6 +217,7 @@ export default function Component() {
               <ul className="list-disc list-inside space-y-2 text-gray-100">
                 <li>キャラクターステータスの詳細管理</li>
                 <li>育成優先度の可視化</li>
+                <li>Google Spreadsheetによる育成データの管理</li>
               </ul>
             </div>
             <div>
