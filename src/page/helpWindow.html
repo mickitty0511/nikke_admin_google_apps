@@ -272,6 +272,21 @@
         text-align: center;
         margin: 0;
       }
+
+      /* テーブルのコンテナスタイル */
+      .table-container {
+        width: 100%;
+        overflow-x: auto;
+        margin-bottom: 20px;
+        white-space: nowrap;
+      }
+
+      /* テーブルのスタイル */
+      table {
+        width: 100%;
+        min-width: 600px; /* テーブルの最小幅を設定 */
+        border-collapse: collapse;
+      }
     </style>
   </head>
   <body>
@@ -291,57 +306,74 @@
 
     <div id="basic" class="tab-content active">
       <h2>実行可能な操作</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>操作</th>
-            <th>説明</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>設定を開く</strong></td>
-            <td>各種設定の有効化/無効化を行うウィンドウを開きます。</td>
-          </tr>
-          <tr>
-            <td><strong>オプション一括更新</strong></td>
-            <td>オプションシートのプルダウンを一括で更新します。</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>操作</th>
+              <th>説明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>★【操作説明】はじめに</strong></td>
+              <td>本ページの説明を表示します</td>
+            </tr>
+            <tr>
+              <td><strong>設定を開く</strong></td>
+              <td>各種設定の有効化/無効化を行うウィンドウを開きます。</td>
+            </tr>
+            <tr>
+              <td><strong>オプション一括更新</strong></td>
+              <td>オプションシートのプルダウンを一括で更新します。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       
       <h2>設定の有効化/無効化</h2>
       <p>「設定を開く」から以下の設定を変更できます：</p>
-      <table>
-        <thead>
-          <tr>
-            <th>設定項目</th>
-            <th>説明</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>オプション一括更新</strong></td>
-            <td>オプションシートのプルダウン一括更新機能の有効/無効を切り替えます。</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>設定項目</th>
+              <th>説明</th>
+              <th>用途</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1行ごとに更新</strong></td>
+              <td>オプションシートのプルダウンを1行ごとに更新する機能を有効/無効化します。</td>
+              <td>数行にわたって一行ずつオプションデータを更新するときに利用ください。キャラごとに登録するオプションの種類を更新すると、各装備の数値プルダウンが更新されます。1行ずつ更新できますが、10行以上を更新するときは更新の遅延を感じるかもしれません。また、一括自動自動をご利用でオプションデータを手動更新するときは、この設定を無効化してください。</td>
+            </tr>
+            <tr>
+              <td><strong>一括更新</strong></td>
+              <td>オプションシートのプルダウンを1行ごとに更新する機能を有効/無効化します。</td>
+              <td>1行ごとに更新する場合に発生する更新の遅延をなるべく少なくしたい場合に利用ください。更新完了までに時間はかかりますが、その間はNIKKEを指揮して地上奪還を目指してみてください。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       
       <h2>注意事項</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>項目</th>
-            <th>説明</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>設定変更後の操作</strong></td>
-            <td>設定を変更した後は、必ずスプレッドシートを再読み込みしてください。</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>説明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>設定変更後の操作</strong></td>
+              <td>設定を変更した後は、必ずスプレッドシートを再読み込みしてください。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       
       <h2>各シートの説明ページへ移動</h2>
       <p>以下のボタンをクリックすると、各シートの説明に移動できます：</p>
