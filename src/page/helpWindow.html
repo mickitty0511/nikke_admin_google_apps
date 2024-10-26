@@ -250,10 +250,35 @@
       .toggle-label {
         margin-left: 10px;
       }
+
+      .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 30px;
+      }
+
+      .header-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-right: 20px;
+      }
+
+      h1 {
+        color: #1976D2;
+        font-weight: 500;
+        text-align: center;
+        margin: 0;
+      }
     </style>
   </head>
   <body>
-    <h1>ようこそ、指揮官！</h1>
+    <div class="header-container">
+      <img src="https://github.com/mickitty0511/nikke_admin_google_apps/blob/main/src/imgs/characters/shifty/shifty_help.png?raw=true" alt="ヘッダー画像" class="header-image">
+      <h1>ようこそ、指揮官！</h1>
+    </div>
     
     <!-- タブヘッダーを動的に生成 -->
     <div class="tabs">
